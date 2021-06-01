@@ -20,7 +20,7 @@ public 	class PostsService {
 	@Autowired
 	private MoviesRepository moviesRepo;
 
-	public long createNewPosts(AddPost request) {
+	public double createNewPosts(AddPost request) {
 		long result = 0;
 		Posts post = new Posts();
 		post.setMovieId(request.getMovie_id());
@@ -32,7 +32,7 @@ public 	class PostsService {
 		post.setTags(request.getTags());
 		post.setCreatedDate(new Date());
 		result = postsRepo.save(post).getId();
-		if(moviesRepo.findByMovieId(request.getMovie_id()) == 0) {
+		if(moviesRepo.findByMovieId(request.getMovie_id()) == null) {
 			Movies movie = new Movies();
 			movie.setMovieId(request.getMovie_id());
 			movie.setMovieImg(request.getMovie_img());

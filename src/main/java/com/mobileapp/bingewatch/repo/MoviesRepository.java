@@ -10,6 +10,6 @@ import com.mobileapp.bingewatch.entity.Movies;
 public interface MoviesRepository extends JpaRepository<Movies, Long> {
 	
 	@Query(value = "SELECT ID FROM MOVIES WHERE MOVIE_ID = ?1", nativeQuery = true)
-	long findByMovieId(String movie_id);
+	Long findByMovieId(String movie_id);
 	
 }

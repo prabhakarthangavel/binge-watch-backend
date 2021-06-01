@@ -1,0 +1,15 @@
+package com.mobileapp.bingewatch.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.mobileapp.bingewatch.entity.Users;
+
+@Repository
+public interface UsersRepo extends JpaRepository<Users, Long> {
+	
+	@Query(value = "select * from users where username = ?1", nativeQuery = true)
+	Users findusername(String username);
+
+}
