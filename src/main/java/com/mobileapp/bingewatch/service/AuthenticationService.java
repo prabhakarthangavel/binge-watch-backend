@@ -23,6 +23,11 @@ public class AuthenticationService {
 		return user.getUsername();
 	}
 	
+	public String getFullName(String username) {
+		Users user = this.usersRepo.findusername(username);
+		return user.getFirstname() + " " + user.getLastname();
+	}
+	
 	public void createNewUser(Register request) throws UserNameAlreadyExist {
 		Users user = new Users();
 		user.setUsername(request.getUsername());
@@ -35,9 +40,13 @@ public class AuthenticationService {
 		set.add(role);
 		user.setRoles(set);
 		if(this.usersRepo.findusername(request.getUsername()) == null) {
-			this.usersRepo.save(user);
+//			this.usersRepo.save(user);
 		}else {
 			throw new UserNameAlreadyExist("User Name Already Exist!");
 		}
+	}
+	
+	public void checkUserName(String userName) throws UserNameAlreadyExist {
+		if(this.usersRepo.findusername(userName) != null) throw new UserNameAlreadyExist("Email Already Exist!");
 	}
 }

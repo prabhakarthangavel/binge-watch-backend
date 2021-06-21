@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -27,6 +28,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private MyUserDetailsService userDetailsService;
+	
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
@@ -51,9 +57,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 			http.cors().configurationSource(corsConfigurationSource());
 		}
 		http.csrf().disable().cors().and()
-
-				.authorizeRequests().antMatchers("/teacher/**").hasAnyRole("ADMIN", "TEACHER")
-				.antMatchers("/student/**").hasRole("STUDENT").antMatchers("/public/**").permitAll().anyRequest()
+				.authorizeRequests()
+//				.antMatchers("/teacher/**").hasAnyRole("ADMIN", "TEACHER")
+				.antMatchers("/posts/**").hasRole("USER")
+				.antMatchers("/public/**").permitAll().anyRequest()
 				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
 	}

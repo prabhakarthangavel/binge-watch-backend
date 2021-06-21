@@ -3,7 +3,7 @@ package com.mobileapp.bingewatch.modals;
 import java.util.Date;
 
 public class AddPost {
-	private long user_id;
+	private String user;
 	private String movie_id;
 	private Date post_date;
 	private int stars;
@@ -17,12 +17,14 @@ public class AddPost {
 	public AddPost() {
 		
 	}
-	public long getUser_id() {
-		return user_id;
+	public String getUser() {
+		return user;
 	}
-	public void setUser_id(long user_id) {
-		this.user_id = user_id;
+
+	public void setUser(String user) {
+		this.user = user;
 	}
+
 	public String getMovie_id() {
 		return movie_id;
 	}

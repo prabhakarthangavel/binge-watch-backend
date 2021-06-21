@@ -6,6 +6,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +37,14 @@ public class AuthenticateController {
 
 	@Autowired
 	private AuthenticationService authService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@PostMapping("/authenticate")
 	public ResponseEntity<Response> auth(@RequestBody Authentication request) throws Exception {
 		String jwt = null;
 		try {
-			System.out.println("try");
 			this.authManager.authenticate(
 					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 			final UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
@@ -54,11 +59,11 @@ public class AuthenticateController {
 	@PostMapping("/register")
 	public ResponseEntity<Response> createUser(@RequestBody Register request) throws Exception {
 		try {
+			request.setPassword(passwordEncoder.encode(request.getPassword()));
 			this.authService.createNewUser(request);
-			return ResponseEntity.ok().body(new Response("User Created"));
+			return ResponseEntity.ok().body(new Response("User Created Successfully!"));
 		} catch (UserNameAlreadyExist ex) {
 			return ResponseEntity.badRequest().body(new Response(ex.getMessage()));
 		}
-
 	}
 }
