@@ -15,6 +15,7 @@ CREATE TABLE MOVIES(ID DOUBLE NOT NULL AUTO_INCREMENT,
                     MOVIE_NAME VARCHAR(100),
                     MOVIE_IMG VARCHAR(255),
                     YEAR YEAR,
+                    RATING NUMERIC,
                     CAST VARCHAR(255),
                     CREATED_DATE DATE);
 

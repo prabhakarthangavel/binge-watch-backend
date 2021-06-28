@@ -1,50 +1,15 @@
-package com.mobileapp.bingewatch.entity;
+package com.mobileapp.bingewatch.modals;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "movies")
-public class Movies implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column
-	private long id;
-	@Column(name="movie_id")
+public class FetchMovies {
 	private String movieId;
-	@Column(name="movie_name")
 	private String movieName;
-	@Column(name="movie_img")
 	private String movieImg;
-	@Column(name="year")
 	private int year;
-	@Column(name="cast")
 	private String cast;
-	@Column(name="created_date")
 	private Date createdDate;
-	@Column(name="rating")
 	private int rating;
-	public int getRating() {
-		return rating;
-	}
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getMovieId() {
 		return movieId;
 	}
@@ -80,5 +45,11 @@ public class Movies implements Serializable {
 	}
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 }

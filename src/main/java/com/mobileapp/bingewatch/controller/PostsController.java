@@ -1,13 +1,18 @@
 package com.mobileapp.bingewatch.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobileapp.bingewatch.modals.AddPost;
+import com.mobileapp.bingewatch.modals.FetchMovies;
 import com.mobileapp.bingewatch.modals.FetchPost;
 import com.mobileapp.bingewatch.modals.Response;
 import com.mobileapp.bingewatch.service.PostsService;
@@ -34,6 +39,11 @@ public class PostsController {
 	@PostMapping("/editPosts")
 	public ResponseEntity<AddPost> editPosts(@RequestBody FetchPost request) {
 		return ResponseEntity.ok().body(this.postsService.fetchPosts(request));
+	}
+	
+	@GetMapping("/getPosts")
+	public ResponseEntity<List<FetchMovies>> getPosts(@PathVariable String userName){
+		return ResponseEntity.ok().body(this.postsService.fetchMoviesList(userName));
 	}
 
 }

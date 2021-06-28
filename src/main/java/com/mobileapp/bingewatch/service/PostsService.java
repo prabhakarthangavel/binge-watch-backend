@@ -1,6 +1,8 @@
 package com.mobileapp.bingewatch.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mobileapp.bingewatch.entity.Movies;
 import com.mobileapp.bingewatch.entity.Posts;
 import com.mobileapp.bingewatch.modals.AddPost;
+import com.mobileapp.bingewatch.modals.FetchMovies;
 import com.mobileapp.bingewatch.modals.FetchPost;
 import com.mobileapp.bingewatch.repo.MoviesRepository;
 import com.mobileapp.bingewatch.repo.PostsRepository;
@@ -38,10 +41,9 @@ public class PostsService {
 	}
 
 	private long editPosts(AddPost request) {
-		int post = this.postsRepo.updatePost(this.usersRepo.findusername(request.getUser()).getId(), request.getMovie_id(),
+		return this.postsRepo.updatePost(this.usersRepo.findusername(request.getUser()).getId(), request.getMovie_id(),
 				request.getPost_date(), request.getMovie_like(), request.getReview(), request.getTags(),
 				request.getStars());
-		return post;
 	}
 
 	private long newPosts(AddPost request) {
@@ -82,5 +84,23 @@ public class PostsService {
 			userPost.setTags(post.getTags());
 		}
 		return userPost;
+	}
+	
+	public List<FetchMovies> fetchMoviesList(String userName) {
+		List<String> movieIds = this.postsRepo.moviesIdForUser(this.usersRepo.findusername(userName).getId());
+		List<FetchMovies> moviesList = new ArrayList<>();
+		movieIds.forEach(id -> {
+			Movies entity = this.moviesRepo.fetchMoviesList(id);
+			FetchMovies movie = new FetchMovies();
+			movie.setCast(entity.getCast());
+			movie.setCreatedDate(entity.getCreatedDate());
+			movie.setMovieId(entity.getMovieId());
+			movie.setMovieImg(entity.getMovieImg());
+			movie.setMovieName(entity.getMovieName());
+			movie.setRating(entity.getRating());
+			movie.setYear(entity.getYear());
+			moviesList.add(movie);
+		});
+		return moviesList;
 	}
 }
