@@ -47,7 +47,7 @@ public class PostsService {
 	}
 
 	private long newPosts(AddPost request) {
-		long result = 0;
+		long result;
 		Posts post = new Posts();
 		post.setMovieId(request.getMovie_id());
 		post.setPostDate(request.getPost_date());
@@ -87,18 +87,20 @@ public class PostsService {
 	}
 	
 	public List<FetchMovies> fetchMoviesList(String userName) {
-		List<String> movieIds = this.postsRepo.moviesIdForUser(this.usersRepo.findusername(userName).getId());
+		List<Posts> posts = this.postsRepo.moviesIdForUser(this.usersRepo.findusername(userName).getId());
 		List<FetchMovies> moviesList = new ArrayList<>();
-		movieIds.forEach(id -> {
-			Movies entity = this.moviesRepo.fetchMoviesList(id);
+		posts.forEach(post -> {
+			Movies entity = this.moviesRepo.fetchMoviesList(post.getMovieId());
 			FetchMovies movie = new FetchMovies();
 			movie.setCast(entity.getCast());
 			movie.setCreatedDate(entity.getCreatedDate());
 			movie.setMovieId(entity.getMovieId());
 			movie.setMovieImg(entity.getMovieImg());
 			movie.setMovieName(entity.getMovieName());
-			movie.setRating(entity.getRating());
+			movie.setRating(post.getStars());
 			movie.setYear(entity.getYear());
+			movie.setReview(post.getReview());
+			movie.setTags(post.getTags());
 			moviesList.add(movie);
 		});
 		return moviesList;

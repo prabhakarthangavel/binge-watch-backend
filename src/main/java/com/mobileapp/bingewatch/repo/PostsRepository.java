@@ -21,6 +21,6 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 	int updatePost(long user_id, String movie_id, Date post_date, char movie_like, String review, String tags,
 			int stars);
 
-	@Query(value = "SELECT MOVIE_ID FROM POSTS WHERE USER_ID=?1", nativeQuery = true)
-	List<String> moviesIdForUser(long user_id);
+	@Query(value = "SELECT * FROM POSTS WHERE USER_ID=?1", nativeQuery = true)
+	List<Posts> moviesIdForUser(long user_id);
 }

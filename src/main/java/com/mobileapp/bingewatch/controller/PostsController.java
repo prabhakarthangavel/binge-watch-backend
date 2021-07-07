@@ -41,7 +41,7 @@ public class PostsController {
 		return ResponseEntity.ok().body(this.postsService.fetchPosts(request));
 	}
 	
-	@GetMapping("/getPosts")
+	@GetMapping("/getPosts/{userName}")
 	public ResponseEntity<List<FetchMovies>> getPosts(@PathVariable String userName){
 		return ResponseEntity.ok().body(this.postsService.fetchMoviesList(userName));
 	}
