@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -60,9 +62,16 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 //				.antMatchers("/teacher/**").hasAnyRole("ADMIN", "TEACHER")
 				.antMatchers("/posts/**").hasRole("USER")
+				.antMatchers("/landing/**").hasRole("USER")
+				.antMatchers("/people/**").hasRole("USER")
 				.antMatchers("/public/**").permitAll().anyRequest()
 				.authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+
+	public static String getLoggedInUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getName();
 	}
 
 }

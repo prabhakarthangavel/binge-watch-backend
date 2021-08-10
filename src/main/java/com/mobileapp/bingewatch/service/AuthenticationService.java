@@ -40,7 +40,7 @@ public class AuthenticationService {
 		set.add(role);
 		user.setRoles(set);
 		if(this.usersRepo.findusername(request.getUsername()) == null) {
-//			this.usersRepo.save(user);
+			this.usersRepo.save(user);
 		}else {
 			throw new UserNameAlreadyExist("User Name Already Exist!");
 		}

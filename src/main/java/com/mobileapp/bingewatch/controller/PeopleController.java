@@ -1,0 +1,35 @@
+package com.mobileapp.bingewatch.controller;
+
+import com.mobileapp.bingewatch.modals.UsersList;
+import com.mobileapp.bingewatch.service.PeopleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/people")
+public class PeopleController {
+
+    @Autowired
+    private PeopleService peopleService;
+
+    @GetMapping("/searchPeople/{name}")
+    public ResponseEntity<List<UsersList>> addPosts(@PathVariable String name) {
+        return ResponseEntity.ok().body(this.peopleService.getUsersList(name));
+    }
+
+    @GetMapping("/followPeople/{userId}")
+    public ResponseEntity<?> followRequest(@PathVariable long userId) {
+        return ResponseEntity.ok().body(this.peopleService.followPeople(userId));
+    }
+
+    @GetMapping("/followingPeople")
+    public ResponseEntity<?> followingPeoples() {
+        return ResponseEntity.ok().body(this.peopleService.getFollowingList());
+    }
+}
