@@ -24,12 +24,17 @@ public class PeopleController {
     }
 
     @GetMapping("/followPeople/{userId}")
-    public ResponseEntity<?> followRequest(@PathVariable long userId) {
+    public ResponseEntity<Long> followRequest(@PathVariable long userId) {
         return ResponseEntity.ok().body(this.peopleService.followPeople(userId));
     }
 
     @GetMapping("/followingPeople")
-    public ResponseEntity<?> followingPeoples() {
+    public ResponseEntity<List<Integer>> followingPeoples() {
         return ResponseEntity.ok().body(this.peopleService.getFollowingList());
+    }
+
+    @GetMapping("/unfollowPeople/{userId}")
+    public ResponseEntity<?> unFollowRequest(@PathVariable long userId) {
+        return ResponseEntity.ok().body(this.peopleService.unFollowRequest(userId));
     }
 }

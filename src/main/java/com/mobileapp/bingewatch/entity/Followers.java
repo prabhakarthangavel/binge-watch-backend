@@ -3,7 +3,7 @@ package com.mobileapp.bingewatch.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "movies")
+@Table(name = "followers")
 public class Followers {
 
     private static final long serialVersionUID = 1L;
