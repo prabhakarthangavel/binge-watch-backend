@@ -49,10 +49,10 @@ public class PeopleService {
             followers.setUser_id(loggedUserId);
             followers.setFollowers(userId.toString() + ",");
             Followers saved = this.followersRepo.save(followers);
-            return saved.getId();
+            return userId;
         } else {
             this.followersRepo.updateFollowers(existUser.get(0).getFollowings() + userId + ",", loggedUserId);
-            return existUser.get(0).getId();
+            return userId;
         }
     }
 
@@ -67,14 +67,35 @@ public class PeopleService {
             followings.updateAndGet(v -> v + ",");
         });
         this.followersRepo.updateFollowers(followings.toString(), loggedUserId);
-        return existUser.get(0).getId();
+        return userId;
     }
 
     public List<Integer> getFollowingList() {
         List<Integer> users = new ArrayList<>();
-        this.followersRepo.findByUserId(this.usersRepo.findusername(SecurityConfigurer.getLoggedInUser()).getId()).forEach(followers -> {
-            users.addAll(Arrays.stream(followers.getFollowings().split("\\,")).map(value -> Integer.parseInt(value)).collect(Collectors.toList()));
+        this.followersRepo.findByUserId(this.usersRepo.findusername(SecurityConfigurer.getLoggedInUser()).getId()).forEach(following -> {
+            users.addAll(Arrays.stream(following.getFollowings().split("\\,")).map(value -> Integer.parseInt(value)).collect(Collectors.toList()));
         });
         return users;
+    }
+
+    private List<Long> getFollowersIds() {
+        List<Long> users = new ArrayList<>();
+        this.followersRepo.findByUserId(this.usersRepo.findusername(SecurityConfigurer.getLoggedInUser()).getId()).forEach(followers -> {
+            users.addAll(Arrays.stream(followers.getFollowers().split("\\,")).map(value -> Long.parseLong(value)).collect(Collectors.toList()));
+        });
+        return users;
+    }
+
+    public List<UsersList> getFollowers() {
+        List<UsersList> userNames = new ArrayList<>();
+        this.usersRepo.usersByIdList(getFollowersIds()).forEach(user -> {
+            UsersList usersList = new UsersList();
+            usersList.setUserName(user.getUsername());
+            usersList.setFirstName(user.getFirstname());
+            usersList.setLastName(user.getLastname());
+            usersList.setId(user.getId());
+            userNames.add(usersList);
+        });
+        return userNames;
     }
 }

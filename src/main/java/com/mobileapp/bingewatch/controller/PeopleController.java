@@ -37,4 +37,10 @@ public class PeopleController {
     public ResponseEntity<?> unFollowRequest(@PathVariable long userId) {
         return ResponseEntity.ok().body(this.peopleService.unFollowRequest(userId));
     }
+
+    //People Landing page
+    @GetMapping("/followers")
+    public ResponseEntity<List<UsersList>> userFollowers() {
+        return ResponseEntity.ok().body(this.peopleService.getFollowers());
+    }
 }
