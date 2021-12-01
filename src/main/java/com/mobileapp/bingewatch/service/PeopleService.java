@@ -86,9 +86,30 @@ public class PeopleService {
         return users;
     }
 
+    private List<Long> getFollowingsIds() {
+        List<Long> users = new ArrayList<>();
+        this.followersRepo.findByUserId(this.usersRepo.findusername(SecurityConfigurer.getLoggedInUser()).getId()).forEach(followers -> {
+            users.addAll(Arrays.stream(followers.getFollowings().split("\\,")).map(value -> Long.parseLong(value)).collect(Collectors.toList()));
+        });
+        return users;
+    }
+
     public List<UsersList> getFollowers() {
         List<UsersList> userNames = new ArrayList<>();
         this.usersRepo.usersByIdList(getFollowersIds()).forEach(user -> {
+            UsersList usersList = new UsersList();
+            usersList.setUserName(user.getUsername());
+            usersList.setFirstName(user.getFirstname());
+            usersList.setLastName(user.getLastname());
+            usersList.setId(user.getId());
+            userNames.add(usersList);
+        });
+        return userNames;
+    }
+
+    public List<UsersList> getFollowings() {
+        List<UsersList> userNames = new ArrayList<>();
+        this.usersRepo.usersByIdList(getFollowingsIds()).forEach(user -> {
             UsersList usersList = new UsersList();
             usersList.setUserName(user.getUsername());
             usersList.setFirstName(user.getFirstname());

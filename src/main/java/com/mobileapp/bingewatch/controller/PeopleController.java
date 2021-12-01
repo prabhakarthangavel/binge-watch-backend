@@ -43,4 +43,10 @@ public class PeopleController {
     public ResponseEntity<List<UsersList>> userFollowers() {
         return ResponseEntity.ok().body(this.peopleService.getFollowers());
     }
+
+    //People Landing page
+    @GetMapping("/followings")
+    public ResponseEntity<List<UsersList>> usersFollowing() {
+        return ResponseEntity.ok().body(this.peopleService.getFollowings());
+    }
 }
